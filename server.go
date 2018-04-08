@@ -71,14 +71,19 @@ const (
 	CONTENT_TYPE_MSGP  = "application/x-msgpack"
 )
 
+const (
+	RESPONSE_TYPE_JSON = "json"
+	RESPONSE_TYPE_MSGP = "msgp"
+)
+
 func (h *ProxyHandler) writeResponse(responseType string, value string, w http.ResponseWriter, req *http.Request) {
 	switch responseType {
-	case "json":
+	case RESPONSE_TYPE_JSON:
 		w.Header().Set(CONTENT_TYPE, CONTENT_TYPE_JSON)
 		data := ResponseJson{value}
 		json_string, _ := json.Marshal(data)
 		fmt.Fprintf(w, string(json_string))
-	case "msgp":
+	case RESPONSE_TYPE_MSGP:
 		w.Header().Set(CONTENT_TYPE, CONTENT_TYPE_MSGP)
 		data := ResponseMsgp{value}
 		b, _ := msgpack.Marshal(data)
@@ -107,9 +112,11 @@ func (h *ProxyHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 }
 
 func runServer(config *Config, kvdb *KeyValueDB, cache Cache) {
+	//TODO memcached protocol
 	proxy_handler := &ProxyHandler{config, kvdb, cache}
 	http.Handle("/", proxy_handler)
 
+	//TODO unix socket
 	address := ":" + strconv.Itoa(config.GetPort())
 	logrus.WithFields(logrus.Fields{
 		"address": address,
