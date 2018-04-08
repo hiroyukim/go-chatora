@@ -1,0 +1,8 @@
+CREATE TABLE key_value
+(
+    `key` VARCHAR(191) NOT NULL UNIQUE ,
+    value TEXT  NOT NULL,
+    `created_at` datetime NOT NULL
+);
+
+-- https://blog.e2info.co.jp/2017/04/17/mysql%E3%81%AE%E3%82%A4%E3%83%B3%E3%83%87%E3%83%83%E3%82%AF%E3%82%B9%E3%82%B5%E3%82%A4%E3%82%BA%E3%81%AB767byte%E3%81%BE%E3%81%A7%E3%81%97%E3%81%8B%E3%81%A4%E3%81%8B%E3%81%88%E3%81%AA%E3%81%84/
