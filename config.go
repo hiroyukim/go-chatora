@@ -46,45 +46,57 @@ func (c *Config) LoadFile(config_path string) {
 	c.Config.ReadConfig(bytes.NewBuffer(yaml))
 }
 
+const (
+	CONFIG_KEY_DRIVER_NAME      = "driver_name"
+	CONFIG_KEY_DATA_SOURCE_NAME = "data_source_name"
+	DEFAULT_DATABASE_NAME       = "key_value.db"
+	CONFIG_KEY_LRU_MAX_SIZE     = "lru_max_size"
+	CONFIG_KEY_TABLE_NAME       = "table_name"
+	CONFIG_KEY_PORT             = "port"
+	CONFIG_KEY_CACHE_TYPE       = "cache_type"
+	CONFIG_KEY_DEBUG_MODE       = "debug_mode"
+	CONFIG_KEY_WORK_DIR         = "work_dir"
+)
+
 func (c *Config) GetDriverName() string {
-	return c.Config.Get("driver_name").(string)
+	return c.Config.Get(CONFIG_KEY_DRIVER_NAME).(string)
 }
 
 func (c *Config) GetDataSourceName() string {
-	if c.Config.Get("data_source_name") == nil {
+	if c.Config.Get(CONFIG_KEY_DATA_SOURCE_NAME) == nil {
 		workDir := c.GetWorkDir()
-		c.Config.Set("data_source_name", filepath.Join(workDir, "key_value.db"))
+		c.Config.Set(CONFIG_KEY_DATA_SOURCE_NAME, filepath.Join(workDir, DEFAULT_DATABASE_NAME))
 	}
-	return c.Config.Get("data_source_name").(string)
+	return c.Config.Get(CONFIG_KEY_DATA_SOURCE_NAME).(string)
 }
 
 func (c *Config) GetLruMaxSize() int {
-	return c.Config.GetInt("lru_max_size")
+	return c.Config.GetInt(CONFIG_KEY_LRU_MAX_SIZE)
 }
 
 func (c *Config) GetTableName() string {
-	return c.Config.Get("table_name").(string)
+	return c.Config.Get(CONFIG_KEY_TABLE_NAME).(string)
 }
 
 func (c *Config) GetPort() int {
-	return c.Config.GetInt("port")
+	return c.Config.GetInt(CONFIG_KEY_PORT)
 }
 
 func (c *Config) GetCacheType() string {
-	return c.Config.Get("cache_type").(string)
+	return c.Config.Get(CONFIG_KEY_CACHE_TYPE).(string)
 }
 
 func (c *Config) GetDebugMode() bool {
-	return c.Config.GetBool("debug_mode")
+	return c.Config.GetBool(CONFIG_KEY_DEBUG_MODE)
 }
 
 func (c *Config) GetWorkDir() string {
-	if c.Config.Get("work_dir") == nil {
+	if c.Config.Get(CONFIG_KEY_WORK_DIR) == nil {
 		work_dir, err := ioutil.TempDir("", "")
 		if err != nil {
 			panic(err)
 		}
-		c.Config.Set("work_dir", work_dir)
+		c.Config.Set(CONFIG_KEY_WORK_DIR, work_dir)
 	}
-	return c.Config.Get("work_dir").(string)
+	return c.Config.Get(CONFIG_KEY_WORK_DIR).(string)
 }

@@ -38,7 +38,7 @@ func (h *ProxyHandler) indexGet(w http.ResponseWriter, req *http.Request) {
 	var err error
 	if cache_value != "" {
 		value = cache_value
-		if h.Config.GetDebugMode() {
+		if DEBUG_MODE {
 			logrus.WithFields(logrus.Fields{
 				"key":   key,
 				"value": value,
@@ -52,7 +52,7 @@ func (h *ProxyHandler) indexGet(w http.ResponseWriter, req *http.Request) {
 			}).Warn(err)
 		} else {
 			h.Cache.Set(key, value)
-			if h.Config.GetDebugMode() {
+			if DEBUG_MODE {
 				logrus.WithFields(logrus.Fields{
 					"key":   key,
 					"value": value,
@@ -114,14 +114,13 @@ func (h *ProxyHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 func runServer(config *Config, kvdb *KeyValueDB, cache Cache) {
 	//TODO memcached protocol
 	proxy_handler := &ProxyHandler{config, kvdb, cache}
-	http.Handle("/", proxy_handler)
 
 	//TODO unix socket
 	address := ":" + strconv.Itoa(config.GetPort())
 	logrus.WithFields(logrus.Fields{
 		"address": address,
 	}).Info("start server")
-	if err := http.ListenAndServe(address, nil); err != nil {
+	if err := http.ListenAndServe(address, proxy_handler); err != nil {
 		log.Fatal(err)
 	}
 }
