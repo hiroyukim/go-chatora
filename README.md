@@ -46,6 +46,28 @@ data_source_name: ./go-chatora.db
 debug_mode: false
 ```
 
+## init db
+
+```sh
+sqlite ./go-chatora.db
+```
+
+### create table
+
+```sql
+CREATE TABLE key_values
+(
+    "key" TEXT NOT NULL UNIQUE,
+    value TEXT NOT NULL
+);
+```
+
+### insert data
+
+```sql
+INSERT INTO key_values (key,value) VALUES('9s','s')
+```
+
 ## run
 
 ```sh
