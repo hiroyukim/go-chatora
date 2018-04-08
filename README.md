@@ -52,6 +52,12 @@ debug_mode: false
 ./go-chatora -c config.yaml
 ```
 
+### request
+
+```
+curl http://0.0.0.0:8080/?key=yourkey&type=json
+```
+
 ### response type
 
 + plain(default)
