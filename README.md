@@ -24,9 +24,20 @@ go build
     + cache_type
         + leveldb
         + arc
+    + driver_name
+        + sqlite3
+        + mysql
     + data_source_name
         + sqlite3: `/path/to/your.db'
         + mysql: `[username[:password]@][protocol[(address)]]/dbname[?param1=value1&...&paramN=valueN]`
+    + table_name
+        + string
+    + lru_max_size
+        + int
+    + port
+        + int
+    + debug_mode
+        + bool
 
 ```yaml
 ---
