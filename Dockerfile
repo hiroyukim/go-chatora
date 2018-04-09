@@ -11,6 +11,6 @@ RUN go get -u github.com/hiroyukim/go-chatora \
 RUN sqlite3 go-chatora.db "CREATE TABLE key_values ( key TEXT NOT NULL UNIQUE, value TEXT NOT NULL);" \
         && sqlite3 go-chatora.db "INSERT INTO key_values (key,value) VALUES('9s','s')"
 
-RUN echo "---\ndriver_name: sqlite3\ndata_source_name: ./go-chatora.db" > $HOME/config.yml
+RUN echo "---\ndriver_name: sqlite3\ndata_source_name: /go/go-chatora.db" > /go/config.yml
 
-CMD ["$GOPATH/src/github.com/hiroyukim/go-chatora/go-chatora", "-c", "$HOME/config.yml"]
+CMD ["/go/bin/go-chatora", "-c", "/go/config.yml"]
