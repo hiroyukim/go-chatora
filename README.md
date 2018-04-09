@@ -5,6 +5,15 @@ By using RDBMS, data can be easily perpetuated. Also, I have a cache layer to im
 
 It is structured to transparently retrieve data from backend's rdbms. It is suitable for cases where management is troublesome when it is desired to perpetuate data with KVS or the like. Access by HTTP and get data with GET. With the `type` parameter, it returns data in the form plain, json, messagepack. There is an Onmemory `arc` and a Storage` leveldb` for caching structures.
 
+## Docker
+
+
+```sh
+docker run -it hiroyukim/go-chatora
+```
+
++ https://hub.docker.com/r/hiroyukim/go-chatora/
+
 ## install
 
 ```sh
