@@ -9,6 +9,8 @@ import (
 	_ "net/http/pprof"
 )
 
+const version = "0.0.1"
+
 var (
 	option_config_path string
 	DEBUG_MODE         bool
