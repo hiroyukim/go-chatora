@@ -15,9 +15,9 @@ func TestServer(t *testing.T) {
 ---
 driver_name: sqlite3
 `)
-	config := NewConfig()
-	config.Load(yaml)
-	kvdb := NewKeyValueDB(config)
+	config := newConfig()
+	config.load(yaml)
+	kvdb := newKeyValueDB(config)
 	_, err := kvdb.DB.Exec(`
 CREATE TABLE key_values
 (
@@ -33,7 +33,7 @@ CREATE TABLE key_values
 	if err != nil {
 		log.Fatal(err)
 	}
-	cache := NewARCCache(config)
+	cache := newARCCache(config)
 
 	proxyHandler := &ProxyHandler{config, kvdb, cache}
 	ts := httptest.NewServer(proxyHandler)
@@ -57,8 +57,8 @@ CREATE TABLE key_values
 		log.Fatal(err)
 	}
 
-	if cache.Get("9s") != "" {
-		t.Fatalf("ErrorDel : %s", cache.Get("9s"))
+	if cache.get("9s") != "" {
+		t.Fatalf("ErrorDel : %s", cache.get("9s"))
 	}
 
 	// other methods

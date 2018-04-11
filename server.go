@@ -22,7 +22,7 @@ type ResponseMsgp struct {
 func (h *ProxyHandler) indexDel(w http.ResponseWriter, req *http.Request) {
 	q := req.URL.Query()
 	key := q.Get("key")
-	h.Cache.Del(key)
+	h.Cache.del(key)
 
 	responseType := q.Get("type")
 	h.writeResponse(responseType, "", w, req)
@@ -33,7 +33,7 @@ func (h *ProxyHandler) indexGet(w http.ResponseWriter, req *http.Request) {
 	key := q.Get("key")
 	responseType := q.Get("type")
 
-	cache_value := h.Cache.Get(key)
+	cache_value := h.Cache.get(key)
 	var value string
 	var err error
 	if cache_value != "" {
@@ -45,13 +45,13 @@ func (h *ProxyHandler) indexGet(w http.ResponseWriter, req *http.Request) {
 			}).Info("OK cache")
 		}
 	} else {
-		value, err = h.Kvdb.GetValue(key)
+		value, err = h.Kvdb.getValue(key)
 		if err != nil {
 			logrus.WithFields(logrus.Fields{
 				"key": key,
 			}).Warn(err)
 		} else {
-			h.Cache.Set(key, value)
+			h.Cache.set(key, value)
 			if DEBUG_MODE {
 				logrus.WithFields(logrus.Fields{
 					"key":   key,
@@ -116,7 +116,7 @@ func runServer(config *Config, kvdb *KeyValueDB, cache Cache) {
 	proxy_handler := &ProxyHandler{config, kvdb, cache}
 
 	//TODO unix socket
-	address := ":" + strconv.Itoa(config.GetPort())
+	address := ":" + strconv.Itoa(config.getPort())
 	logrus.WithFields(logrus.Fields{
 		"address": address,
 	}).Info("start server")

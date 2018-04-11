@@ -7,9 +7,9 @@ import (
 )
 
 func TestNewLevelDBCache(t *testing.T) {
-	config := NewConfig()
+	config := newConfig()
 	var cache Cache
-	cache = NewLevelDBCache(config)
+	cache = newLevelDBCache(config)
 
 	if reflect.TypeOf(cache) != reflect.TypeOf(&LevelDBCache{}) {
 		log.Fatal("TestNewLevelDBCache error: " + reflect.TypeOf(cache).String())
@@ -17,12 +17,12 @@ func TestNewLevelDBCache(t *testing.T) {
 }
 
 func TestLevelDBCacheMethod(t *testing.T) {
-	config := NewConfig()
+	config := newConfig()
 	var cache Cache
-	cache = NewLevelDBCache(config)
+	cache = newLevelDBCache(config)
 
-	cache.Set("2b", "B")
-	value := cache.Get("2b")
+	cache.set("2b", "B")
+	value := cache.get("2b")
 
 	if value != "B" {
 		log.Fatal("TestMethod error: " + value)

@@ -26,10 +26,10 @@ func main() {
 		panic("require option_config_path(c)" + option_config_path)
 	}
 
-	config := NewConfig()
-	config.LoadFile(option_config_path)
+	config := newConfig()
+	config.loadFile(option_config_path)
 
-	DEBUG_MODE = config.GetDebugMode()
+	DEBUG_MODE = config.getDebugMode()
 
 	if DEBUG_MODE {
 		runtime.SetBlockProfileRate(1)
@@ -38,8 +38,8 @@ func main() {
 		}()
 	}
 
-	kvdb := NewKeyValueDB(config)
-	cache := NewCache(config)
+	kvdb := newKeyValueDB(config)
+	cache := newCache(config)
 
 	runServer(config, kvdb, cache)
 }

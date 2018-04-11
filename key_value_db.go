@@ -13,18 +13,20 @@ type KeyValueDB struct {
 	TableName string
 }
 
-func NewKeyValueDB(config *Config) *KeyValueDB {
-	db, err := sql.Open(config.GetDriverName(), config.GetDataSourceName())
+func newKeyValueDB(config *Config) *KeyValueDB {
+	db, err := sql.Open(config.getDriverName(), config.getDataSourceName())
 
 	if err != nil {
 		panic(err)
 	}
 
-	return &KeyValueDB{db, config.GetTableName()}
+	return &KeyValueDB{db, config.getTableName()}
 }
 
-func (kvdb *KeyValueDB) GetValue(key string) (string, error) {
+func (kvdb *KeyValueDB) getValue(key string) (string, error) {
 	var value string
+	//TODO multi value
+	//TODO QueryRowContext
 	err := kvdb.DB.QueryRow("SELECT `value` FROM `"+kvdb.TableName+"` WHERE `key`=?", key).Scan(&value)
 	switch {
 	case err == sql.ErrNoRows:
@@ -36,6 +38,6 @@ func (kvdb *KeyValueDB) GetValue(key string) (string, error) {
 	}
 }
 
-func (kvdb *KeyValueDB) Close() {
+func (kvdb *KeyValueDB) close() {
 	kvdb.DB.Close()
 }

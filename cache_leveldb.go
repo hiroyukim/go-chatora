@@ -12,16 +12,16 @@ type LevelDBCache struct {
 	Cache *leveldb.DB
 }
 
-func NewLevelDBCache(config *Config) *LevelDBCache {
+func newLevelDBCache(config *Config) *LevelDBCache {
 	var work_dir string
 	var err error
-	if config.GetWorkDir() == "" {
+	if config.getWorkDir() == "" {
 		work_dir, err = ioutil.TempDir("", "")
 		if err != nil {
 			panic(err)
 		}
 	} else {
-		work_dir = config.GetWorkDir()
+		work_dir = config.getWorkDir()
 	}
 	logrus.WithFields(logrus.Fields{
 		"work_dir": work_dir,
@@ -35,7 +35,7 @@ func NewLevelDBCache(config *Config) *LevelDBCache {
 	return &LevelDBCache{db}
 }
 
-func (c *LevelDBCache) Get(key string) string {
+func (c *LevelDBCache) get(key string) string {
 	value, err := c.Cache.Get([]byte(key), nil)
 	if err != nil {
 		return ""
@@ -44,10 +44,10 @@ func (c *LevelDBCache) Get(key string) string {
 	return string(value[:])
 }
 
-func (c *LevelDBCache) Set(key string, value string) {
+func (c *LevelDBCache) set(key string, value string) {
 	c.Cache.Put([]byte(key), []byte(value), nil)
 }
 
-func (c *LevelDBCache) Del(key string) {
+func (c *LevelDBCache) del(key string) {
 	c.Cache.Delete([]byte(key), nil)
 }

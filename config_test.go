@@ -7,7 +7,7 @@ import (
 )
 
 func TestNewConfig(t *testing.T) {
-	config := NewConfig()
+	config := newConfig()
 
 	if reflect.TypeOf(config) != reflect.TypeOf(&Config{}) {
 		log.Fatal("NewConfig error: " + reflect.TypeOf(config).String())
@@ -25,22 +25,22 @@ port: 80
 cache_type: arc
 `)
 
-	config := NewConfig()
-	config.Load(yaml)
+	config := newConfig()
+	config.load(yaml)
 
-	if config.GetPort() != 80 {
-		log.Fatal("GetPort error: " + string(config.GetPort()))
+	if config.getPort() != 80 {
+		log.Fatal("GetPort error: " + string(config.getPort()))
 	}
 
-	if config.GetLruMaxSize() != 1000000 {
-		log.Fatal("GetLruMaxSize error: " + string(config.GetLruMaxSize()))
+	if config.getLruMaxSize() != 1000000 {
+		log.Fatal("GetLruMaxSize error: " + string(config.getLruMaxSize()))
 	}
 
-	if config.GetDataSourceName() != "[username[:password]@][protocol[(address)]]/dbname[?param1=value1&...&paramN=valueN]" {
-		log.Fatal("GetDataSourceName error: " + config.GetDataSourceName())
+	if config.getDataSourceName() != "[username[:password]@][protocol[(address)]]/dbname[?param1=value1&...&paramN=valueN]" {
+		log.Fatal("GetDataSourceName error: " + config.getDataSourceName())
 	}
 
-	if config.GetDriverName() != "mysql" {
-		log.Fatal("GetDriverName error:" + config.GetDriverName())
+	if config.getDriverName() != "mysql" {
+		log.Fatal("GetDriverName error:" + config.getDriverName())
 	}
 }

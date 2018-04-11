@@ -6,8 +6,8 @@ type ARCCache struct {
 	Cache *lru.ARCCache
 }
 
-func NewARCCache(config *Config) *ARCCache {
-	cache, err := lru.NewARC(config.GetLruMaxSize())
+func newARCCache(config *Config) *ARCCache {
+	cache, err := lru.NewARC(config.getLruMaxSize())
 
 	if err != nil {
 		panic(err)
@@ -16,7 +16,7 @@ func NewARCCache(config *Config) *ARCCache {
 	return &ARCCache{cache}
 }
 
-func (c *ARCCache) Get(key string) string {
+func (c *ARCCache) get(key string) string {
 	cache_value, cache_ok := c.Cache.Get(key)
 	if !cache_ok {
 		return ""
@@ -25,10 +25,10 @@ func (c *ARCCache) Get(key string) string {
 	}
 }
 
-func (c *ARCCache) Set(key string, value string) {
+func (c *ARCCache) set(key string, value string) {
 	c.Cache.Add(key, value)
 }
 
-func (c *ARCCache) Del(key string) {
+func (c *ARCCache) del(key string) {
 	c.Cache.Remove(key)
 }

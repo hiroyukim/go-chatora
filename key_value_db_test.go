@@ -13,9 +13,9 @@ driver_name: mysql
 data_source_name: '[username[:password]@][protocol[(address)]]/dbname[?param1=value1&...&paramN=valueN]'
 `)
 
-	config := NewConfig()
-	config.Load(yaml)
-	db := NewKeyValueDB(config)
+	config := newConfig()
+	config.load(yaml)
+	db := newKeyValueDB(config)
 
 	if reflect.TypeOf(db) != reflect.TypeOf(&KeyValueDB{}) {
 		log.Fatal("TestNewKeyValueDB error: " + reflect.TypeOf(db).String())
@@ -28,9 +28,9 @@ func TestGetValue(t *testing.T) {
 driver_name: sqlite3
 `)
 
-	config := NewConfig()
-	config.Load(yaml)
-	db := NewKeyValueDB(config)
+	config := newConfig()
+	config.load(yaml)
+	db := newKeyValueDB(config)
 
 	_, err := db.DB.Exec(`
 CREATE TABLE key_values
@@ -49,7 +49,7 @@ CREATE TABLE key_values
 	}
 
 	var value string
-	value, err = db.GetValue("9s")
+	value, err = db.getValue("9s")
 
 	if err != nil {
 		log.Fatal(err)

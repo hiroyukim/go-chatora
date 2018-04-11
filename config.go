@@ -20,7 +20,7 @@ type Config struct {
 	Config *viper.Viper
 }
 
-func NewConfig() *Config {
+func newConfig() *Config {
 	config := viper.New()
 
 	config.SetDefault("lru_max_size", DEFAULT_LRU_MAX_SIZE)
@@ -32,12 +32,12 @@ func NewConfig() *Config {
 	return &Config{config}
 }
 
-func (c *Config) Load(yaml []byte) {
+func (c *Config) load(yaml []byte) {
 	c.Config.SetConfigType("yaml")
 	c.Config.ReadConfig(bytes.NewBuffer(yaml))
 }
 
-func (c *Config) LoadFile(config_path string) {
+func (c *Config) loadFile(config_path string) {
 	yaml, err := ioutil.ReadFile(config_path)
 	if err != nil {
 		panic(err)
@@ -58,39 +58,39 @@ const (
 	CONFIG_KEY_WORK_DIR         = "work_dir"
 )
 
-func (c *Config) GetDriverName() string {
+func (c *Config) getDriverName() string {
 	return c.Config.Get(CONFIG_KEY_DRIVER_NAME).(string)
 }
 
-func (c *Config) GetDataSourceName() string {
+func (c *Config) getDataSourceName() string {
 	if c.Config.Get(CONFIG_KEY_DATA_SOURCE_NAME) == nil {
-		workDir := c.GetWorkDir()
+		workDir := c.getWorkDir()
 		c.Config.Set(CONFIG_KEY_DATA_SOURCE_NAME, filepath.Join(workDir, DEFAULT_DATABASE_NAME))
 	}
 	return c.Config.Get(CONFIG_KEY_DATA_SOURCE_NAME).(string)
 }
 
-func (c *Config) GetLruMaxSize() int {
+func (c *Config) getLruMaxSize() int {
 	return c.Config.GetInt(CONFIG_KEY_LRU_MAX_SIZE)
 }
 
-func (c *Config) GetTableName() string {
+func (c *Config) getTableName() string {
 	return c.Config.Get(CONFIG_KEY_TABLE_NAME).(string)
 }
 
-func (c *Config) GetPort() int {
+func (c *Config) getPort() int {
 	return c.Config.GetInt(CONFIG_KEY_PORT)
 }
 
-func (c *Config) GetCacheType() string {
+func (c *Config) getCacheType() string {
 	return c.Config.Get(CONFIG_KEY_CACHE_TYPE).(string)
 }
 
-func (c *Config) GetDebugMode() bool {
+func (c *Config) getDebugMode() bool {
 	return c.Config.GetBool(CONFIG_KEY_DEBUG_MODE)
 }
 
-func (c *Config) GetWorkDir() string {
+func (c *Config) getWorkDir() string {
 	if c.Config.Get(CONFIG_KEY_WORK_DIR) == nil {
 		work_dir, err := ioutil.TempDir("", "")
 		if err != nil {

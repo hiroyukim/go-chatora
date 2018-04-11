@@ -1,20 +1,20 @@
 package main
 
 type Cache interface {
-	Get(key string) string
-	Set(key string, value string)
-	Del(key string)
+	get(key string) string
+	set(key string, value string)
+	del(key string)
 }
 
-func NewCache(config *Config) Cache {
+func newCache(config *Config) Cache {
 	var cache Cache
-	switch config.GetCacheType() {
+	switch config.getCacheType() {
 	case "arc":
-		cache = NewARCCache(config)
+		cache = newARCCache(config)
 	case "leveldb":
-		cache = NewLevelDBCache(config)
+		cache = newLevelDBCache(config)
 	default:
-		panic("unexcpected cache type" + config.GetCacheType())
+		panic("unexcpected cache type" + config.getCacheType())
 	}
 
 	return cache
