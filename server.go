@@ -45,7 +45,7 @@ func (h *ProxyHandler) indexGet(w http.ResponseWriter, req *http.Request) {
 			}).Info("OK cache")
 		}
 	} else {
-		value, err = h.Kvdb.getValue(key)
+		value, err = h.Kvdb.GetValue(key)
 		if err != nil {
 			logrus.WithFields(logrus.Fields{
 				"key": key,

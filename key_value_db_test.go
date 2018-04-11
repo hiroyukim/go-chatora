@@ -49,7 +49,7 @@ CREATE TABLE key_values
 	}
 
 	var value string
-	value, err = db.getValue("9s")
+	value, err = db.GetValue("9s")
 
 	if err != nil {
 		log.Fatal(err)

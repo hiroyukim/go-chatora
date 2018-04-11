@@ -23,7 +23,7 @@ func NewKeyValueDB(config *Config) *KeyValueDB {
 	return &KeyValueDB{db, config.GetTableName()}
 }
 
-func (kvdb *KeyValueDB) getValue(key string) (string, error) {
+func (kvdb *KeyValueDB) GetValue(key string) (string, error) {
 	var value string
 	err := kvdb.DB.QueryRow("SELECT `value` FROM `"+kvdb.TableName+"` WHERE `key`=?", key).Scan(&value)
 	switch {
