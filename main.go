@@ -14,6 +14,7 @@ const version = "0.0.1"
 var (
 	option_config_path string
 	DEBUG_MODE         bool
+	FORCED_CACHE_FLAG  bool
 )
 
 func init() {
@@ -30,6 +31,7 @@ func main() {
 	config.loadFile(option_config_path)
 
 	DEBUG_MODE = config.getDebugMode()
+	FORCED_CACHE_FLAG = config.getForcedCacheFlag()
 
 	if DEBUG_MODE {
 		runtime.SetBlockProfileRate(1)

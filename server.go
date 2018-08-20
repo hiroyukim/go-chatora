@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/sirupsen/logrus"
 	"github.com/vmihailenco/msgpack"
@@ -33,31 +34,38 @@ func (h *ProxyHandler) indexGet(w http.ResponseWriter, req *http.Request) {
 	key := q.Get("key")
 	responseType := q.Get("type")
 
-	cache_value := h.Cache.get(key)
+	cacheData := h.Cache.get(key)
 	var value string
 	var err error
-	if cache_value != "" {
-		value = cache_value
+	utime = time.Now().UtimeNano()
+	if cacheData == nil {
+		value, err = h.Kvdb.getValue(key)
+		if FORCED_CACHE_FLAG {
+			value = ""
+			// cacheData make
+			h.Cache.set(key, value)
+		} else {
+			if err != nil {
+				logrus.WithFields(logrus.Fields{
+					"key": key,
+				}).Warn(err)
+			} else {
+				h.Cache.set(key, value)
+				if DEBUG_MODE {
+					logrus.WithFields(logrus.Fields{
+						"key":   key,
+						"value": value,
+					}).Info("Add cache")
+				}
+			}
+		}
+	} else {
+		value = cacheData.data
 		if DEBUG_MODE {
 			logrus.WithFields(logrus.Fields{
 				"key":   key,
 				"value": value,
 			}).Info("OK cache")
-		}
-	} else {
-		value, err = h.Kvdb.getValue(key)
-		if err != nil {
-			logrus.WithFields(logrus.Fields{
-				"key": key,
-			}).Warn(err)
-		} else {
-			h.Cache.set(key, value)
-			if DEBUG_MODE {
-				logrus.WithFields(logrus.Fields{
-					"key":   key,
-					"value": value,
-				}).Info("Add cache")
-			}
 		}
 	}
 

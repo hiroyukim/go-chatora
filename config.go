@@ -9,11 +9,12 @@ import (
 )
 
 const (
-	DEFAULT_LRU_MAX_SIZE = 1000
-	DEFAULT_TABLE_NAME   = "key_values"
-	DEFAULT_PORT         = 8080
-	DEFAULT_CACHE_TYPE   = "arc"
-	DEFAULT_DEBUG_MODE   = false
+	DEFAULT_LRU_MAX_SIZE      = 1000
+	DEFAULT_TABLE_NAME        = "key_values"
+	DEFAULT_PORT              = 8080
+	DEFAULT_CACHE_TYPE        = "arc"
+	DEFAULT_DEBUG_MODE        = false
+	DEFAULT_FORCED_CACHE_FLAG = false
 )
 
 type Config struct {
@@ -28,6 +29,7 @@ func newConfig() *Config {
 	config.SetDefault("port", DEFAULT_PORT)
 	config.SetDefault("cache_type", DEFAULT_CACHE_TYPE)
 	config.SetDefault("debug_mode", DEFAULT_DEBUG_MODE)
+	config.SetDefault("forced_cache_flag", DEFAULT_FORCED_CACHE_FLAG)
 
 	return &Config{config}
 }
@@ -47,15 +49,16 @@ func (c *Config) loadFile(config_path string) {
 }
 
 const (
-	CONFIG_KEY_DRIVER_NAME      = "driver_name"
-	CONFIG_KEY_DATA_SOURCE_NAME = "data_source_name"
-	DEFAULT_DATABASE_NAME       = "key_value.db"
-	CONFIG_KEY_LRU_MAX_SIZE     = "lru_max_size"
-	CONFIG_KEY_TABLE_NAME       = "table_name"
-	CONFIG_KEY_PORT             = "port"
-	CONFIG_KEY_CACHE_TYPE       = "cache_type"
-	CONFIG_KEY_DEBUG_MODE       = "debug_mode"
-	CONFIG_KEY_WORK_DIR         = "work_dir"
+	CONFIG_KEY_DRIVER_NAME       = "driver_name"
+	CONFIG_KEY_DATA_SOURCE_NAME  = "data_source_name"
+	DEFAULT_DATABASE_NAME        = "key_value.db"
+	CONFIG_KEY_LRU_MAX_SIZE      = "lru_max_size"
+	CONFIG_KEY_TABLE_NAME        = "table_name"
+	CONFIG_KEY_PORT              = "port"
+	CONFIG_KEY_CACHE_TYPE        = "cache_type"
+	CONFIG_KEY_DEBUG_MODE        = "debug_mode"
+	CONFIG_KEY_WORK_DIR          = "work_dir"
+	CONFIG_KEY_FORCED_CACHE_FLAG = "forced_cache_flag"
 )
 
 func (c *Config) getDriverName() string {
@@ -88,6 +91,10 @@ func (c *Config) getCacheType() string {
 
 func (c *Config) getDebugMode() bool {
 	return c.Config.GetBool(CONFIG_KEY_DEBUG_MODE)
+}
+
+func (c *Config) getForcedCacheFlag() bool {
+	return c.Config.GetBool(CONFIG_KEY_FORCED_CACHE_FLAG)
 }
 
 func (c *Config) getWorkDir() string {
